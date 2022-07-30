@@ -1,4 +1,4 @@
-# matsuu/wsl-isucon/isucon12-qualify
+# wsl-isucon/isucon12-qualify
 
 ## これはなに
 
