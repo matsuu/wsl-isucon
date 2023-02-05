@@ -12,9 +12,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Vampire/setup-wsl@v2
-        with:
-          set-as-default: 'false'
+      - run: wsl --install
       - run: Set-ExecutionPolicy RemoteSigned -Scope Process
       - name: build
         run: |
@@ -27,9 +25,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Vampire/setup-wsl@v2
-        with:
-          set-as-default: 'false'
+      - run: wsl --install
       - run: Set-ExecutionPolicy RemoteSigned -Scope Process
       - name: build
         run: |
