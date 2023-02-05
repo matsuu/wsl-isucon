@@ -21,13 +21,13 @@ If ($hash -ne $sha256sum) {
 
 wsl.exe --import $Distro $InstallLocation $tarball --version 2
 wsl.exe -d $Distro apt update
-wsl.exe -d $Distro apt install -y wsl-setup systemd
-wsl.exe -d $Distro /bin/bash -c "( echo [boot]; echo command = /usr/libexec/wsl-systemd ) >> /etc/wsl.conf"
+wsl.exe -d $Distro apt install -y ubuntu-wsl
+wsl.exe -d $Distro /bin/bash -c "( echo [boot]; echo systemd=true ) >> /etc/wsl.conf"
 wsl.exe -t $Distro
 
 $scriptsdir = Join-Path $PSScriptRoot "scripts"
 Get-ChildItem $scriptsdir -Filter *.sh | Sort-Object -Property FullName | Foreach-Object {
-  (Get-Content $_.FullName) -join "`n" | wsl.exe -d $Distro /usr/libexec/nslogin /bin/bash -l
+  (Get-Content $_.FullName) -join "`n" | wsl.exe -d $Distro /bin/bash -l
 }
 
 wsl.exe -t $Distro

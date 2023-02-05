@@ -4,6 +4,10 @@
 
 ISUCON12予選の環境をWSL2上に構築するスクリプトです。
 
+## 事前準備
+
+WSL2上でsystemdを動作させるためWSLのバージョン0.67.6以降を用意してください。
+
 ## 構築
 
 PowerShell上で以下を実行します。
@@ -24,10 +28,8 @@ Set-ExecutionPolicy RemoteSigned -Scope Process
 
 ## 実行
 
-systemdを利用するため `/usr/libexec/nslogin` を噛ませる必要があります。
-
 ```
-wsl.exe ~ -d isucon12-qualify /usr/libexec/nslogin /bin/bash
+wsl.exe ~ -d isucon12-qualify /bin/bash
 ```
 
 ### サイト表示確認

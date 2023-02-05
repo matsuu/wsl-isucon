@@ -27,7 +27,7 @@ systemctl restart isuconquest.go
 
 cat > /etc/wsl.conf <<EOF
 [boot]
-command = /usr/libexec/wsl-systemd
+systemd = true
 
 [user]
 default = isucon
