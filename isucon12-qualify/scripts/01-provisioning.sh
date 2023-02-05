@@ -55,7 +55,7 @@ apt-get autoremove -y
 
 cat > /etc/wsl.conf <<EOF
 [boot]
-command = /usr/libexec/wsl-systemd
+systemd = true
 
 [user]
 default = isucon
