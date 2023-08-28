@@ -15,6 +15,7 @@ rm -rf ${GITDIR}
 git clone --depth=1 https://github.com/isucon/isucon12-qualify.git ${GITDIR}
 (
   cd ${GITDIR}/bench
+  find . -name '*.go' -type f -exec sed -i -e "s/t\.isucon\.dev/t.isucon.local/g" {} +
   make
 )
 (
