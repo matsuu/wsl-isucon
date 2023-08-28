@@ -26,6 +26,14 @@ Set-ExecutionPolicy RemoteSigned -Scope Process
 .\build.ps1 isucon12-qualify .\isucon12-qualify
 ```
 
+Windows側のhostsファイルに以下を記載します。
+
+```/etc/hosts
+127.0.0.1 admin.t.isucon.local
+127.0.0.1 isucon.t.isucon.local
+127.0.0.1 kayac.t.isucon.local
+```
+
 ## 実行
 
 ```
@@ -34,17 +42,11 @@ wsl.exe ~ -d isucon12-qualify /bin/bash
 
 ### サイト表示確認
 
-hostsファイルに以下を記載
-
-```/etc/hosts
-127.0.0.1 admin.t.isucon.dev isucon.t.isucon.dev kayac.t.isucon.dev
-```
-
 それぞれのドメインでアクセス
 
-https://admin.t.isucon.dev/
-https://isucon.t.isucon.dev/
-https://kayac.t.isucon.dev/
+https://admin.t.isucon.local/
+https://isucon.t.isucon.local/
+https://kayac.t.isucon.local/
 
 ### ベンチマーク実行
 
@@ -56,6 +58,10 @@ cd ~/bench
 ## 関連
 
 * [ISUCON12予選問題](https://github.com/isucon/isucon12-qualify)
+
+## 本番と異なるところ
+
+* 本番ではドメインとして `*.t.isucon.dev` が使われていましたが、[devトップレベルドメインはHSTS preload-listに含まれており](https://ja.wikipedia.org/wiki/.dev)、正規のSSL証明書がないとアクセスできないため `*.t.isucon.local` に書き換えています
 
 ## TODO
 
