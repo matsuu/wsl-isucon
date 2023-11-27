@@ -63,7 +63,7 @@ https://pipe.u.isucon.local/
 本番環境のインスタンスタイプは `c5.large` でした。近いスペックを再現したい場合は以下のコマンドを実行してください（必要に応じてCPUQuotaの値を微調整してください）。
 
 ```
-sudo systemctl set-property system.slice CPUQuota=200% MemoryLimit=3.75G
+sudo systemctl set-property system.slice CPUQuota=200% MemoryLimit=4G
 ```
 
 ベンチマーカーは手動実行(=user.slice扱いとなる)ためこの制約を受けません。
