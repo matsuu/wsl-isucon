@@ -5,9 +5,9 @@ Param(
 
 $ErrorActionPreference = "Stop"
 
-#$uri = "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.1-base-amd64.tar.gz"
-$uri = "http://ftp.jaist.ac.jp/pub/Linux/ubuntu-cdimage/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.1-base-amd64.tar.gz"
-$sha256sum = "5B0FFB1E31D4B85F5A2214F105D1377BA616C453B38FF46C278DC6472B21E2D8"
+#$uri = "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.4-base-amd64.tar.gz"
+$uri = "http://ftp.jaist.ac.jp/pub/Linux/ubuntu-cdimage/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.4-base-amd64.tar.gz"
+$sha256sum = "C1E67EF7B17A6300E136118BD1DC04725009CB376C1AAD10ABCF8CD453628D58"
 $tarball = Join-Path $PSScriptRoot ([System.IO.Path]::GetFileName($uri))
 
 If (![System.IO.File]::Exists($tarball)) {
