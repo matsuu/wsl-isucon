@@ -33,4 +33,4 @@ jobs:
           .\build.ps1 ${{ matrix.name }} .\${{ matrix.name }}
       - name: bench
         run: |
-          wsl.exe ~ -d ${{ matrix.name }} /bin/bash -c "${{ matrix.bench_cmd }}"
+          wsl.exe -d ${{ matrix.name }} --cd '~' /bin/bash -c "${{ matrix.bench_cmd }}"
