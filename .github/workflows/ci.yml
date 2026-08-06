@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  isucon:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: isucon12-qualify
+            bench_cmd: "cd bench ; ./bench -target-addr 127.0.0.1:443"
+          - name: isucon12-final
+            bench_cmd: "export ISUXBENCH_TARGET=127.0.0.1 ; ./bin/benchmarker --stage=prod --request-timeout=10s --initialize-request-timeout=60s"
+          - name: isucon13
+            bench_cmd: "./bench run --dns-port 1053 --enable-ssl"
+          - name: isucon14
+            bench_cmd: "./bench run . run --addr 127.0.0.1:443 --target https://isuride.xiv.isucon.net --payment-url http://127.0.0.1:12346 --payment-bind-port 12346"
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: wsl --install --no-distribution --web-download
+        timeout-minutes: 10
+      - run: Set-ExecutionPolicy RemoteSigned -Scope Process
+      - name: build
+        run: |
+          cd ${{ matrix.name }}
+          .\build.ps1 ${{ matrix.name }} .\${{ matrix.name }}
+      - name: bench
+        run: |
+          wsl.exe -d ${{ matrix.name }} --cd '~' /bin/bash -c "${{ matrix.bench_cmd }}"
