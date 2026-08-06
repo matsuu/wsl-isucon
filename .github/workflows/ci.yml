@@ -20,7 +20,8 @@ jobs:
             bench_cmd: "export ISUXBENCH_TARGET=127.0.0.1 ; ./bin/benchmarker --stage=prod --request-timeout=10s --initialize-request-timeout=60s"
     steps:
       - uses: actions/checkout@v7.0.1
-      - run: wsl --install
+      - run: wsl --install --no-distribution --web-download
+        timeout-minutes: 10
       - run: Set-ExecutionPolicy RemoteSigned -Scope Process
       - name: build
         run: |
