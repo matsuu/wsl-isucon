@@ -21,7 +21,7 @@ If ($hash -ne $sha256sum) {
 
 wsl.exe --import $Distro $InstallLocation $tarball --version 2
 wsl.exe -d $Distro apt update
-wsl.exe -d $Distro apt install -y ubuntu-wsl
+wsl.exe -d $Distro env DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-wsl
 wsl.exe -d $Distro /bin/bash -c "( echo [boot]; echo systemd=true ) >> /etc/wsl.conf"
 wsl.exe -t $Distro
 
