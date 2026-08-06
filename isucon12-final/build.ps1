@@ -27,7 +27,15 @@ wsl.exe -t $Distro
 
 $scriptsdir = Join-Path $PSScriptRoot "scripts"
 Get-ChildItem $scriptsdir -Filter *.sh | Sort-Object -Property FullName | Foreach-Object {
-  (Get-Content $_.FullName) -join "`n" | wsl.exe -d $Distro /bin/bash -l
+  # Copy the script into the distro and run it from a file rather than piping it
+  # to bash's stdin: any command in the script that reads stdin (npm, apt, ...)
+  # otherwise swallows the rest of the script, so the remaining steps are
+  # skipped silently.
+  (Get-Content $_.FullName) -join "`n" | wsl.exe -d $Distro /bin/bash -c "cat > /root/provision.sh"
+  If ($LASTEXITCODE -ne 0) { Write-Error "Failed to copy $($_.Name) into $Distro." }
+  wsl.exe -d $Distro /bin/bash -l /root/provision.sh
+  If ($LASTEXITCODE -ne 0) { Write-Error "$($_.Name) failed with exit code $LASTEXITCODE." }
+  wsl.exe -d $Distro rm -f /root/provision.sh
 }
 
 wsl.exe -t $Distro

@@ -9,7 +9,9 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get install -y --no-install-recommends ansible apt-utils curl make sudo
 snap install go --classic
 snap install node --classic
-npm install -g pnpm
+# pnpm >=10 turns ignored build scripts into a hard error, and isucon14's
+# frontend needs @swc/core and esbuild to run theirs.
+npm install -g pnpm@9
 
 rm -rf ${GITDIR}
 git clone --depth=1 https://github.com/isucon/isucon14.git ${GITDIR}
