@@ -8,29 +8,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  isucon12q:
+  isucon:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: isucon12-qualify
+            bench_cmd: "cd bench ; ./bench -target-addr 127.0.0.1:443"
+          - name: isucon12-final
+            bench_cmd: "export ISUXBENCH_TARGET=127.0.0.1 ; ./bin/benchmarker --stage=prod --request-timeout=10s --initialize-request-timeout=60s"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7.0.1
       - run: wsl --install
       - run: Set-ExecutionPolicy RemoteSigned -Scope Process
       - name: build
         run: |
-          cd isucon12-qualify
-          .\build.ps1 isucon12-qualify .\isucon12-qualify
+          cd ${{ matrix.name }}
+          .\build.ps1 ${{ matrix.name }} .\${{ matrix.name }}
       - name: bench
         run: |
-          wsl.exe ~ -d isucon12-qualify /bin/bash -c "cd bench ; ./bench -target-addr 127.0.0.1:443"
-  isucon12f:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: wsl --install
-      - run: Set-ExecutionPolicy RemoteSigned -Scope Process
-      - name: build
-        run: |
-          cd isucon12-final
-          .\build.ps1 isucon12-final .\isucon12-final
-      - name: bench
-        run: |
-          wsl.exe ~ -d isucon12-final /bin/bash -c "export ISUXBENCH_TARGET=127.0.0.1 ; ./bin/benchmarker --stage=prod --request-timeout=10s --initialize-request-timeout=60s"
+          wsl.exe ~ -d ${{ matrix.name }} /bin/bash -c "${{ matrix.bench_cmd }}"
