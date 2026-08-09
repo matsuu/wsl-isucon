@@ -15,7 +15,7 @@ jobs:
       matrix:
         include:
           - name: isucon12-qualify
-            bench_cmd: "cd bench ; ./bench -target-addr 127.0.0.1:443"
+            bench_cmd: "while sleep 1; do curl -H 'Host: admin.t.isucon.local' -i -k https://127.0.0.1:443/initialize | grep '^HTTP.*405' && break ; done ; cd bench ; ./bench -target-addr 127.0.0.1:443"
           - name: isucon12-final
             bench_cmd: "export ISUXBENCH_TARGET=127.0.0.1 ; ./bin/benchmarker --stage=prod --request-timeout=10s --initialize-request-timeout=60s"
           - name: isucon13
