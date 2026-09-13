@@ -1,0 +1,30 @@
+name: CI - isucon12-final
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'isucon12-final/**'
+      - '.github/workflows/isucon12-final.yml'
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'isucon12-final/**'
+      - '.github/workflows/isucon12-final.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: wsl --install --no-distribution --web-download
+        timeout-minutes: 10
+      - run: Set-ExecutionPolicy RemoteSigned -Scope Process
+      - name: build
+        run: |
+          cd isucon12-final
+          .\build.ps1 isucon12-final .\isucon12-final
+      - name: bench
+        run: |
+          wsl.exe -d isucon12-final --cd '~' /bin/bash -c "export ISUXBENCH_TARGET=127.0.0.1 ; ./bin/benchmarker --stage=prod --request-timeout=10s --initialize-request-timeout=60s"

@@ -1,0 +1,30 @@
+name: CI - isucon14
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'isucon14/**'
+      - '.github/workflows/isucon14.yml'
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'isucon14/**'
+      - '.github/workflows/isucon14.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: wsl --install --no-distribution --web-download
+        timeout-minutes: 10
+      - run: Set-ExecutionPolicy RemoteSigned -Scope Process
+      - name: build
+        run: |
+          cd isucon14
+          .\build.ps1 isucon14 .\isucon14
+      - name: bench
+        run: |
+          wsl.exe -d isucon14 --cd '~' /bin/bash -c "./bench run . run --addr 127.0.0.1:443 --target https://isuride.xiv.isucon.net --payment-url http://127.0.0.1:12346 --payment-bind-port 12346"
