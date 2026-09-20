@@ -1,0 +1,30 @@
+name: CI - isucon12-qualify
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'isucon12-qualify/**'
+      - '.github/workflows/isucon12-qualify.yml'
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'isucon12-qualify/**'
+      - '.github/workflows/isucon12-qualify.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: wsl --install --no-distribution --web-download
+        timeout-minutes: 10
+      - run: Set-ExecutionPolicy RemoteSigned -Scope Process
+      - name: build
+        run: |
+          cd isucon12-qualify
+          .\build.ps1 isucon12-qualify .\isucon12-qualify
+      - name: bench
+        run: |
+          wsl.exe -d isucon12-qualify --cd '~' /bin/bash -c "while sleep 1; do curl -H 'Host: admin.t.isucon.local' -i -k https://127.0.0.1:443/initialize | grep '^HTTP.*405' && break ; done ; cd bench ; ./bench -target-addr 127.0.0.1:443"

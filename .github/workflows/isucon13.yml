@@ -1,0 +1,30 @@
+name: CI - isucon13
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'isucon13/**'
+      - '.github/workflows/isucon13.yml'
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'isucon13/**'
+      - '.github/workflows/isucon13.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: wsl --install --no-distribution --web-download
+        timeout-minutes: 10
+      - run: Set-ExecutionPolicy RemoteSigned -Scope Process
+      - name: build
+        run: |
+          cd isucon13
+          .\build.ps1 isucon13 .\isucon13
+      - name: bench
+        run: |
+          wsl.exe -d isucon13 --cd '~' /bin/bash -c "./bench run --dns-port 1053 --enable-ssl"
